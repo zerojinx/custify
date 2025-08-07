@@ -11,7 +11,7 @@ const corsHeaders = {
 export async function loader({ request }) {
   const url = new URL(request.url);
   const shop = url.searchParams.get("shop");
-  const customerId = url.searchParams.get("customerId");
+  const customerId = url.searchParams.get("logged_in_customer_id");
   const signature = url.searchParams.get("signature");
 
   console.log("API called with params:", { shop, customerId, signature });

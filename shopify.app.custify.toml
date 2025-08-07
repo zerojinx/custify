@@ -3,12 +3,8 @@
 client_id = "a7a45552777544cb32f58cc7a06734c8"
 name = "custify"
 handle = "custify-8"
-application_url = "https://trek-had-seconds-prisoners.trycloudflare.com"
+application_url = "https://spanish-howto-emissions-se.trycloudflare.com"
 embedded = true
-
-[build]
-include_config_on_deploy = true
-automatically_update_urls_on_dev = true
 
 [webhooks]
 api_version = "2025-07"
@@ -18,12 +14,15 @@ api_version = "2025-07"
 scopes = "read_customers,write_customers,write_products"
 
 [auth]
-redirect_urls = ["https://trek-had-seconds-prisoners.trycloudflare.com/auth/callback", "https://trek-had-seconds-prisoners.trycloudflare.com/auth/shopify/callback", "https://trek-had-seconds-prisoners.trycloudflare.com/api/auth/callback"]
+redirect_urls = ["https://spanish-howto-emissions-se.trycloudflare.com/auth/callback", "https://spanish-howto-emissions-se.trycloudflare.com/auth/shopify/callback", "https://spanish-howto-emissions-se.trycloudflare.com/api/auth/callback"]
+
+[app_proxy]
+url = "https://spanish-howto-emissions-se.trycloudflare.com/apps/custify-proxy"
+subpath = "custify"
+prefix = "apps"
 
 [pos]
 embedded = false
 
-[app_proxy]
-url = "https://trek-had-seconds-prisoners.trycloudflare.com/apps/custify-proxy"
-subpath = "custify"
-prefix = "apps"
+[build]
+automatically_update_urls_on_dev = true

@@ -387,21 +387,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   try {
     let requestUrl = '/apps/custify';
-    {% if customer %}
-      const customerId = {{ customer.id | json }};
-      const shop = {{ shop.permanent_domain | json }};
-      const timestamp = Math.floor(Date.now() / 1000);
-      const params = new URLSearchParams({
-        shop,
-        customerId,
-        timestamp
-      });
-      requestUrl += '?' + params.toString();
-      console.log('Customer data:', { customerId, shop, timestamp });
-    {% else %}
-      console.log('No customer data available');
-    {% endif %}
-
     console.log('Request URL:', requestUrl);
     console.log('Making API request...');
     const response = await fetch(requestUrl, {
