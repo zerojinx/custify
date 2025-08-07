@@ -1,0 +1,14 @@
+{
+  "name": "Customer Rewards Block",
+  "settings": {
+    "heading": {
+      "label": "Block Heading"
+    },
+    "show_points": {
+      "label": "Show Points"
+    },
+    "show_coupon": {
+      "label": "Show Coupon Code"
+    }
+  }
+}

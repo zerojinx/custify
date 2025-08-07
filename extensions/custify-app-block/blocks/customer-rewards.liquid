@@ -1,0 +1,17 @@
+<div id="custify-rewards-block" class="custify-rewards">
+  <div class="custify-loading">
+    <p>Loading your rewards...</p>
+  </div>
+</div>
+
+{% render 'custify-rewards-script' %}
+
+{% schema %}
+{
+  "name": "Customer Rewards Block",
+  "target": "section",
+  "enabled_on": {
+    "templates": ["customers/account"]
+  }
+}
+{% endschema %}

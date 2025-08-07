@@ -1,0 +1,29 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "2e538e4353bb3330de1b461a5b5d0b81"
+name = "custify"
+handle = "custify"
+application_url = "https://heather-pal-tied-researcher.trycloudflare.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2025-07"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,write_customers,write_products"
+
+[auth]
+redirect_urls = ["https://heather-pal-tied-researcher.trycloudflare.com/auth/callback", "https://heather-pal-tied-researcher.trycloudflare.com/auth/shopify/callback", "https://heather-pal-tied-researcher.trycloudflare.com/api/auth/callback"]
+
+[pos]
+embedded = false
+
+[app_proxy]
+url = "https://heather-pal-tied-researcher.trycloudflare.com/apps/custify-proxy"
+subpath = "custify"
+prefix = "apps"

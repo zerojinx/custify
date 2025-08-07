@@ -1,0 +1,10 @@
+type = "theme"
+name = "custify-app-block"
+
+[build]
+command = ""
+watch = [
+  "blocks/**/*",
+  "snippets/**/*", 
+  "assets/**/*"
+]
