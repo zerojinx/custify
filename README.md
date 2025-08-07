@@ -10,8 +10,11 @@ Level: Intermediate–Advanced
 - **Custom Fields**: Points, coupon codes, and notes for each customer
 - **CRUD Operations**: Full create, read, update, delete functionality for custom fields
 - **Storefront Integration**: Customer rewards block for account pages
-- **Secure App Proxy**: Not created yet
 - **Real-time Updates**: Seamless data synchronization between admin and storefront
+
+##  Pending tasks
+
+- **HMAC verification**: calculated string is not matching shopify provided signature
 
 ## Project Structure
 

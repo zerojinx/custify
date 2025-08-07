@@ -1,10 +1,500 @@
-<div id="custify-rewards-block" class="custify-rewards">
+<div 
+  id="custify-rewards-block"
+  class="custify-rewards"
+  data-heading="{{ section.settings.heading | escape }}"
+  data-show-points="{{ section.settings.show_points }}"
+  data-show-coupon="{{ section.settings.show_coupon }}"
+>
   <div class="custify-loading">
-    <p>Loading your rewards...</p>
+    <div class="custify-loading-spinner"></div>
+    <p class="custify-loading-text">Loading your rewards...</p>
   </div>
 </div>
 
-{% render 'custify-rewards-script' %}
+<style>
+  .custify-rewards {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+  }
+
+  /* Loading State */
+  .custify-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    min-height: 200px;
+    animation: custify-pulse 2s ease-in-out infinite;
+  }
+
+  .custify-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e2e8f0;
+    border-top: 3px solid #6366f1;
+    border-radius: 50%;
+    animation: custify-spin 1s linear infinite;
+    margin-bottom: 16px;
+  }
+
+  .custify-loading-text {
+    margin: 0;
+    color: #64748b;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  /* Main Container */
+  .custify-rewards-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .custify-rewards-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #f59e0b);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .custify-rewards-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Heading */
+  .custify-heading {
+    margin: 0 0 24px 0;
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    letter-spacing: -0.025em;
+  }
+
+  /* Reward Items */
+  .custify-reward-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .custify-reward-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .custify-reward-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    transition: width 0.3s ease;
+  }
+
+  .custify-reward-item:hover {
+    transform: translateX(4px);
+    border-color: #c7d2fe;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  .custify-reward-item:hover::before {
+    width: 100%;
+    opacity: 0.05;
+  }
+
+  .custify-reward-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+  }
+
+  .custify-reward-label::before {
+    content: '🎁';
+    margin-right: 8px;
+    font-size: 18px;
+  }
+
+  .custify-reward-item:first-child .custify-reward-label::before {
+    content: '⭐';
+  }
+
+  .custify-reward-value {
+    font-weight: 700;
+    font-size: 20px;
+    color: #6366f1;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .custify-coupon-code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: #059669;
+    background: #d1fae5;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #a7f3d0;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .custify-coupon-code:hover {
+    background: #a7f3d0;
+    transform: scale(1.02);
+  }
+
+  .custify-coupon-code::after {
+    content: 'Click to copy';
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  .custify-coupon-code:hover::after {
+    opacity: 1;
+  }
+
+  /* Status Messages */
+  .custify-message,
+  .custify-empty {
+    text-align: center;
+    padding: 32px 24px;
+    color: #64748b;
+    font-size: 16px;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    border: 2px dashed #cbd5e1;
+    position: relative;
+  }
+
+  .custify-message::before,
+  .custify-empty::before {
+    content: '💫';
+    display: block;
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .custify-error {
+    text-align: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    color: #dc2626;
+    font-weight: 500;
+    position: relative;
+  }
+
+  .custify-error::before {
+    content: '⚠️';
+    display: block;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  /* Animations */
+  @keyframes custify-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes custify-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes custify-slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .custify-rewards-container {
+    animation: custify-slideIn 0.6s ease-out;
+  }
+
+  .custify-reward-item {
+    animation: custify-slideIn 0.4s ease-out;
+    animation-fill-mode: backwards;
+  }
+
+  .custify-reward-item:nth-child(2) { animation-delay: 0.1s; }
+  .custify-reward-item:nth-child(3) { animation-delay: 0.2s; }
+  .custify-reward-item:nth-child(4) { animation-delay: 0.3s; }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .custify-rewards {
+      padding: 16px;
+    }
+
+    .custify-rewards-container {
+      padding: 24px 20px;
+    }
+
+    .custify-heading {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .custify-reward-item {
+      flex-direction: column;
+      text-align: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .custify-reward-label {
+      margin-bottom: 4px;
+    }
+
+    .custify-loading {
+      padding: 32px 20px;
+      min-height: 160px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .custify-rewards {
+      padding: 12px;
+    }
+
+    .custify-rewards-container {
+      padding: 20px 16px;
+    }
+
+    .custify-heading {
+      font-size: 20px;
+    }
+
+    .custify-reward-item {
+      padding: 16px;
+    }
+
+    .custify-loading {
+      min-height: 140px;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+  const container = document.getElementById('custify-rewards-block');
+
+  const settings = {
+    heading: container.dataset.heading || "My Rewards",
+    showPoints: container.dataset.showPoints || 'true',
+    showCoupon: container.dataset.showCoupon || 'true'
+  };
+
+
+  // Debug logging - Initial state
+  console.log('=== CUSTIFY REWARDS DEBUG START ===');
+  console.log('Container element:', container);
+  console.log('Settings:', settings);
+  console.log('Container innerHTML before API call:', container ? container.innerHTML : 'Container not found');
+  if (!container) {
+    console.error('Container not found! Exiting...');
+    return;
+  }
+
+  // Add copy functionality for coupon codes
+  function addCopyFunctionality() {
+    const couponCodes = container.querySelectorAll('.custify-coupon-code');
+    couponCodes.forEach(coupon => {
+      coupon.addEventListener('click', async function() {
+        try {
+          await navigator.clipboard.writeText(this.textContent);
+          const originalText = this.textContent;
+          this.textContent = 'Copied!';
+          this.style.background = '#6366f1';
+          this.style.color = 'white';
+          
+          setTimeout(() => {
+            this.textContent = originalText;
+            this.style.background = '#d1fae5';
+            this.style.color = '#059669';
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy coupon code:', err);
+        }
+      });
+    });
+  }
+
+  try {
+    let requestUrl = '/apps/custify';
+    {% if customer %}
+      const customerId = {{ customer.id | json }};
+      const shop = {{ shop.permanent_domain | json }};
+      const timestamp = Math.floor(Date.now() / 1000);
+      const params = new URLSearchParams({
+        shop,
+        customerId,
+        timestamp
+      });
+      requestUrl += '?' + params.toString();
+      console.log('Customer data:', { customerId, shop, timestamp });
+    {% else %}
+      console.log('No customer data available');
+    {% endif %}
+
+    console.log('Request URL:', requestUrl);
+    console.log('Making API request...');
+    const response = await fetch(requestUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+
+    console.log('Response status:', response.status);
+    console.log('Response ok:', response.ok);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API Error Response:', errorText);
+      throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log('API Response data:', data);
+    
+    let contentHtml = '<div class="custify-rewards-container">';
+    
+    if (settings.heading) {
+      contentHtml += `<h3 class="custify-heading">${settings.heading}</h3>`;
+    }
+
+    if (data.error) {
+      console.log('Showing error state:', data.error);
+      contentHtml += `<div class="custify-error">${data.error}</div>`;
+    } else if (data.message && !data.hasData) {
+      console.log('Showing message state:', data.message);
+      contentHtml += `<div class="custify-message">${data.message}</div>`;
+    } else if (!data.hasData) {
+      console.log('Showing empty state');
+      contentHtml += `<div class="custify-empty">No rewards available yet.<br><span style="font-size: 14px; opacity: 0.7;">Keep shopping to earn points!</span></div>`;
+    } else {
+      console.log('Showing rewards data');
+      // Show points
+      if (settings.showPoints && data.points !== undefined && data.points !== null) {
+        console.log('Adding points display:', data.points);
+        contentHtml += `
+          <div class="custify-reward-item">
+            <span class="custify-reward-label">Reward Points</span>
+            <span class="custify-reward-value">${data.points.toLocaleString()}</span>
+          </div>
+        `;
+      }
+
+      // Show coupon
+      if (settings.showCoupon && data.couponCode) {
+        console.log('Adding coupon display:', data.couponCode);
+        contentHtml += `
+          <div class="custify-reward-item">
+            <span class="custify-reward-label">Coupon Code</span>
+            <span class="custify-coupon-code">${data.couponCode}</span>
+          </div>
+        `;
+      }
+    }
+
+    contentHtml += '</div>';
+    console.log('Generated HTML content:', contentHtml);
+    console.log('Container innerHTML before mutation:', container.innerHTML);
+    container.innerHTML = contentHtml;
+    console.log('Container innerHTML after mutation:', container.innerHTML);
+    
+    // Add copy functionality after content is loaded
+    addCopyFunctionality();
+    console.log('Copy functionality added');
+
+  } catch (error) {
+    console.error('Custify rewards error:', error);
+    console.log('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    container.innerHTML = `
+      <div class="custify-rewards-container">
+        <div class="custify-error">
+          Unable to load rewards at this time.<br>
+          <span style="font-size: 14px; opacity: 0.7;">Please try refreshing the page.</span>
+        </div>
+      </div>
+    `;
+    console.log('Error state HTML set');
+  }
+  
+  console.log('=== CUSTIFY REWARDS DEBUG END ===');
+});
+</script>
 
 {% schema %}
 {
@@ -12,6 +502,26 @@
   "target": "section",
   "enabled_on": {
     "templates": ["customers/account"]
-  }
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your Rewards"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_points",
+      "label": "Show Points",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_coupon",
+      "label": "Show Coupon Code",
+      "default": true
+    }
+  ]
 }
 {% endschema %}

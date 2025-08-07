@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "a7a45552777544cb32f58cc7a06734c8"
+client_id = "2e538e4353bb3330de1b461a5b5d0b81"
 name = "custify"
-handle = "custify-8"
-application_url = "https://trek-had-seconds-prisoners.trycloudflare.com"
+handle = "custify"
+application_url = "https://arrive-blonde-file-peter.trycloudflare.com"
 embedded = true
 
 [build]
@@ -18,12 +18,12 @@ api_version = "2025-07"
 scopes = "read_customers,write_customers,write_products"
 
 [auth]
-redirect_urls = ["https://trek-had-seconds-prisoners.trycloudflare.com/auth/callback", "https://trek-had-seconds-prisoners.trycloudflare.com/auth/shopify/callback", "https://trek-had-seconds-prisoners.trycloudflare.com/api/auth/callback"]
+redirect_urls = ["https://arrive-blonde-file-peter.trycloudflare.com/auth/callback", "https://arrive-blonde-file-peter.trycloudflare.com/auth/shopify/callback", "https://arrive-blonde-file-peter.trycloudflare.com/api/auth/callback"]
 
 [pos]
 embedded = false
 
 [app_proxy]
-url = "https://trek-had-seconds-prisoners.trycloudflare.com/apps/custify-proxy"
+url = "https://arrive-blonde-file-peter.trycloudflare.com/apps/custify-proxy"
 subpath = "custify"
 prefix = "apps"
