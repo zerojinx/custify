@@ -1,10 +1,18 @@
-type = "theme"
 name = "custify-app-block"
+type = "theme_app_extension"
 
 [build]
 command = ""
-watch = [
-  "blocks/**/*",
-  "snippets/**/*", 
-  "assets/**/*"
-]
+watch = []
+
+[[extensions]]
+type = "theme_app_extension"
+name = "Custify Rewards"
+handle = "custify-rewards"
+
+[extensions.settings]
+include_app_block = true
+
+[[extensions.blocks]]
+type = "customer-rewards"
+name = "Customer Rewards Block"
