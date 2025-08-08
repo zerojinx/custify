@@ -1,9 +1,9 @@
 <div 
   id="custify-rewards-block"
   class="custify-rewards"
-  data-heading="{{ section.settings.heading | escape }}"
-  data-show-points="{{ section.settings.show_points }}"
-  data-show-coupon="{{ section.settings.show_coupon }}"
+  data-heading="{{ block.settings.heading | escape }}"
+  data-show-points="{{ block.settings.show_points }}"
+  data-show-coupon="{{ block.settings.show_coupon }}"
 >
   <div class="custify-loading">
     <div class="custify-loading-spinner"></div>
@@ -346,10 +346,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   const settings = {
     heading: container.dataset.heading || "My Rewards",
-    showPoints: container.dataset.showPoints || 'true',
-    showCoupon: container.dataset.showCoupon || 'true'
+    showPoints: container.dataset.showPoints === 'true',
+    showCoupon: container.dataset.showCoupon === 'true'
   };
-
 
   // Debug logging - Initial state
   console.log('=== CUSTIFY REWARDS DEBUG START ===');
@@ -493,19 +492,19 @@ document.addEventListener('DOMContentLoaded', async function () {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Your Rewards"
+      "info": "The title displayed at the top of the rewards block"
     },
     {
       "type": "checkbox",
       "id": "show_points",
       "label": "Show Points",
-      "default": true
+      "info": "Display the customer's reward points"
     },
     {
       "type": "checkbox",
       "id": "show_coupon",
-      "label": "Show Coupon Code",
-      "default": true
+      "label": "Show Coupon Code", 
+      "info": "Display available coupon codes"
     }
   ]
 }
